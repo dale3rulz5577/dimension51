@@ -3,6 +3,7 @@ package me.dale3rulz5577.dimension51.main;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
@@ -17,9 +18,11 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class Main {
 	public static Block hydraore;
 	public static Block hydrablock;
+	public static Block blockTeleporter;
+	public static BiomeGenBase biome1;
 	public static Item hydraessence;
 	public static Item hydra;
-	public static Block blockTeleporter;
+	
 	public final static int dimensionId = 51;
 	@Init
 	public void load(FMLInitializationEvent event) {
@@ -32,7 +35,7 @@ public class Main {
 		hydraore = new HydraOre(3100, "hydraore")
 				.setUnlocalizedName("hydraore").setHardness(25.0F)
 				.setStepSound(Block.soundStoneFootstep);
-		
+		biome1 = new BiomeGen1(51).setBiomeName("Alien Planet").setTemperatureRainfall(1.2F, 0.9F);
 		MinecraftForge.setBlockHarvestLevel(hydraore, "pickaxe", 3);
 		MinecraftForge.setBlockHarvestLevel(hydrablock, "pickaxe", 3);
 		
@@ -43,6 +46,7 @@ public class Main {
 		GameRegistry.registerBlock(hydrablock, "hydra_block");
 		GameRegistry.registerItem(hydraessence, "hydra_essence");
 		GameRegistry.registerBlock(hydraore, "hydra_ore");
+		GameRegistry.addBiome(biome1);
 		
 		LanguageRegistry.addName(hydra, "Hydra");
 		LanguageRegistry.addName(hydrablock, "Block of Hydra");
