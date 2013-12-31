@@ -3,24 +3,32 @@ package me.dale3rulz5577.dimension51.main;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.Init;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
+//import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.PreInit;
+//import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid = "Dimension51", name = "Dimension 51", version = "1.0.0 APLHA")
+@Mod(modid = "Dimension51", name = "Dimension 51", version = "v0.0.1 PRE-APLHA")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true)
 public class Main {
 	public static Block hydraore;
 	public static Block hydrablock;
+	public static Block blockTeleporter;
+	public static BiomeGenBase biome1;
 	public static Item hydraessence;
 	public static Item hydra;
-
-	@Init
-	public void load(FMLInitializationEvent event) {
+	
+	public final static int dimensionId = 51;
+	@Mod.PreInit
+	public void preLoad(FMLPreInitializationEvent event) {
+		blockTeleporter = new BlockTeleporter(3104).setUnlocalizedName("teleporter");
 		hydra = new Hydra(3102).setUnlocalizedName("hydra_item");
 		hydrablock = new HydraBlock(3103, "hydrablock")
 		.setUnlocalizedName("hydrablock").setHardness(40.0F)
@@ -29,10 +37,13 @@ public class Main {
 		hydraore = new HydraOre(3100, "hydraore")
 				.setUnlocalizedName("hydraore").setHardness(25.0F)
 				.setStepSound(Block.soundStoneFootstep);
-		
+		biome1 = new BiomeGen1(51).setBiomeName("Alien Planet").setTemperatureRainfall(1.2F, 0.9F);
 		MinecraftForge.setBlockHarvestLevel(hydraore, "pickaxe", 3);
 		MinecraftForge.setBlockHarvestLevel(hydrablock, "pickaxe", 3);
-
+		
+		DimensionManager.registerProviderType(dimensionId, WorldProviderD51.class, false);
+		DimensionManager.registerDimension(dimensionId, dimensionId);
+		GameRegistry.registerBlock(blockTeleporter, "Teleportation block");
 		GameRegistry.registerItem(hydra, "hydra");
 		GameRegistry.registerBlock(hydrablock, "hydra_block");
 		GameRegistry.registerItem(hydraessence, "hydra_essence");
